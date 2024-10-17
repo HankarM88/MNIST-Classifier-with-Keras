@@ -56,4 +56,34 @@ You can install the required dependencies using the following command:
 
 ```bash
 pip install keras tensorflow numpy pandas matplotlib
+```
+## Usage
+1. Load and Prepare Data
+ ```python
+from keras.datasets import mnist
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+```
+2. Build CNN Model
+ ```python
+model = Sequential([
+    Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(28, 28, 1)),
+    MaxPooling2D(pool_size=(2, 2)),
+    Dropout(0.25),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dropout(0.5),
+    Dense(10, activation='softmax')
+])
 
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10)
+```
+3. Make predictions and evaluate the model
+```python
+  predictions = model.predict(X_test)
+  accuracy = model.evaluate(x_test, y_test)
+  ```
+4. Save the model
+```python
+ model.save("mnist_cnn_model.h5")
+  ```
